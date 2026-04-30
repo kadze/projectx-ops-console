@@ -1,0 +1,12 @@
+<%= form_with model: tenant, local: true do |f| %>
+  <% if tenant.errors.any? %>
+    <div class="flash"><%= tenant.errors.full_messages.to_sentence %></div>
+  <% end %>
+  <p><%= f.label :name %><br><%= f.text_field :name %></p>
+  <p><%= f.label :slug %><br><%= f.text_field :slug %></p>
+  <p><%= f.label :billing_plan %><br>
+     <%= f.select :billing_plan, %w[trial standard enterprise] %></p>
+  <p><%= f.label :status %><br>
+     <%= f.select :status, %w[active suspended closed] %></p>
+  <%= f.submit %>
+<% end %>

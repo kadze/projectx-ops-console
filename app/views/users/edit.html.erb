@@ -1,0 +1,11 @@
+<h1>Edit user</h1>
+<%= form_with model: @user, local: true do |f| %>
+  <% if @user.errors.any? %>
+    <div class="flash"><%= @user.errors.full_messages.to_sentence %></div>
+  <% end %>
+  <p><%= f.label :email %><br><%= f.email_field :email %></p>
+  <p><%= f.label :role %><br><%= f.select :role, %w[admin member viewer] %></p>
+  <p><%= f.label :status %><br><%= f.select :status, %w[active suspended closed] %></p>
+  <p><%= f.label :internal_notes %><br><%= f.text_area :internal_notes %></p>
+  <%= f.submit %>
+<% end %>

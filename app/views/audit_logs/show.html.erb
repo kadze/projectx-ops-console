@@ -1,0 +1,6 @@
+<h1>Audit entry #<%= @entry.id %></h1>
+<p>recorded at: <%= @entry.recorded_at %></p>
+<p>actor user id: <%= @entry.actor_user_id %></p>
+<p>action: <%= @entry.action %></p>
+<p>target: <%= @entry.target_type %>#<%= @entry.target_id %></p>
+<pre><%= JSON.pretty_generate(@entry.payload || {}) %></pre>

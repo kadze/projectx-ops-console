@@ -1,0 +1,6 @@
+<h1>Shipment #<%= @shipment.id %></h1>
+<p>status: <%= @shipment.status %></p>
+<p>internal status: <%= @shipment.internal_status || '—' %></p>
+<p>carrier: <%= @shipment.carrier_code || '—' %></p>
+<p>tracking: <%= @shipment.tracking_number || '—' %></p>
+<p>created by admin id: <%= @shipment.created_by_admin_id || '(shipments-api authored)' %></p>

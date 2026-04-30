@@ -1,0 +1,21 @@
+<h1>Shipments <small style="font-weight: normal; color: #6b7280">(read-only here — shipments-api owns writes)</small></h1>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th><th>Tenant</th><th>Status</th>
+      <th>Carrier</th><th>Tracking</th><th>Created</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @shipments.each do |s| %>
+      <tr>
+        <td><%= link_to "##{s.id}", s %></td>
+        <td><%= s.tenant_id %></td>
+        <td><%= s.status %><% if s.internal_status && s.internal_status != 'none' %><br><small><%= s.internal_status %></small><% end %></td>
+        <td><%= s.carrier_code %></td>
+        <td><%= s.tracking_number %></td>
+        <td><%= s.created_at&.strftime('%Y-%m-%d') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

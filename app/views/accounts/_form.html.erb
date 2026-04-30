@@ -1,0 +1,13 @@
+<%= form_with model: account, local: true do |f| %>
+  <% if account.errors.any? %>
+    <div class="flash"><%= account.errors.full_messages.to_sentence %></div>
+  <% end %>
+  <p><%= f.label :tenant_id %><br>
+     <%= f.collection_select :tenant_id, Tenant.order(:name), :id, :name %></p>
+  <p><%= f.label :name %><br><%= f.text_field :name %></p>
+  <p><%= f.label :status %><br>
+     <%= f.select :status, %w[active suspended closed] %></p>
+  <p><%= f.label :branding_logo_url %><br><%= f.text_field :branding_logo_url %></p>
+  <p><%= f.label :branding_color_hex %><br><%= f.text_field :branding_color_hex %></p>
+  <%= f.submit %>
+<% end %>

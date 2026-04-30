@@ -1,0 +1,25 @@
+:concurrency: 5
+:queues:
+  - [critical, 5]
+  - [default,  3]
+  - [billing,  2]
+  - [warehouse, 1]
+  - [low,      1]
+
+# Recurring jobs. We use sidekiq-scheduler — yes, it has its own
+# operational sharp edges (the schedule lives in this YAML, not in code,
+# so a config change requires a deploy). We've talked about moving to
+# Sidekiq Pro's recurring-job feature. We don't have Pro.
+:schedule:
+  billing_reconciliation:
+    cron: '0 5 * * *'         # 05:00 UTC nightly
+    class: 'BillingReconciliationJob'
+    queue: billing
+  warehouse_sync:
+    cron: '0 7 * * *'         # 07:00 UTC nightly (after billing recon)
+    class: 'WarehouseSyncJob'
+    queue: warehouse
+  tenant_usage_rollup:
+    cron: '5 * * * *'         # Top of every hour, +5 min
+    class: 'TenantUsageRollupJob'
+    queue: low

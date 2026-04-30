@@ -1,0 +1,22 @@
+<h1>Audit log</h1>
+<p class="flash">
+  Note: entries created during impersonation record the IMPERSONATOR's
+  user id, not the impersonated user's. The payload column carries the
+  <code>impersonating_user_id</code> field as a workaround. See the
+  impersonation-service comments.
+</p>
+<table>
+  <thead>
+    <tr><th>When</th><th>Actor</th><th>Action</th><th>Target</th></tr>
+  </thead>
+  <tbody>
+    <% @entries.each do |e| %>
+      <tr>
+        <td><%= e.recorded_at&.strftime('%Y-%m-%d %H:%M:%S') %></td>
+        <td><%= e.actor_user_id %><br><small><%= e.actor_label %></small></td>
+        <td><%= e.action %></td>
+        <td><%= e.target_type %>#<%= e.target_id %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

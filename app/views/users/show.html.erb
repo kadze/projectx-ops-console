@@ -1,0 +1,9 @@
+<h1><%= @user.email %></h1>
+<p>role: <%= @user.role %></p>
+<p>status: <%= @user.status %></p>
+<p>internal notes: <%= @user.internal_notes || '—' %></p>
+<p>
+  <%= button_to 'Impersonate', impersonation_path(user_id: @user.id),
+                method: :post, form: { style: 'display:inline' } %>
+  <%= link_to 'edit', edit_user_path(@user) %>
+</p>

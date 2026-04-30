@@ -1,0 +1,15 @@
+<h1>Users</h1>
+<table>
+  <thead><tr><th>Email</th><th>Tenant</th><th>Account</th><th>Role</th><th>Status</th></tr></thead>
+  <tbody>
+    <% @users.each do |u| %>
+      <tr>
+        <td><%= link_to u.email, u %></td>
+        <td><%= u.tenant&.name %></td>
+        <td><%= u.account&.name %></td>
+        <td><%= u.role %></td>
+        <td><%= u.status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

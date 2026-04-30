@@ -1,0 +1,6 @@
+<h1>Invoice #<%= @invoice.id %></h1>
+<p>account: <%= @invoice.account_id %></p>
+<p>period: <%= @invoice.period_start %> → <%= @invoice.period_end %></p>
+<p>status: <%= @invoice.status %></p>
+<p>total: <%= number_to_currency(@invoice.total_cents.to_f / 100, unit: @invoice.currency || 'USD') %></p>
+<p>metadata: <code><%= @invoice.metadata&.to_json %></code></p>

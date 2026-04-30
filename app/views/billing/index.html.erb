@@ -1,0 +1,14 @@
+<h1>Billing</h1>
+<table>
+  <thead><tr><th>Account</th><th>Period</th><th>Status</th><th>Total</th></tr></thead>
+  <tbody>
+    <% @invoices.each do |inv| %>
+      <tr>
+        <td><%= inv.account_id %></td>
+        <td><%= inv.period_start %> → <%= inv.period_end %></td>
+        <td><%= inv.status %></td>
+        <td><%= number_to_currency(inv.total_cents.to_f / 100, unit: inv.currency || 'USD') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

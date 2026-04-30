@@ -1,0 +1,16 @@
+<h1>Tenants</h1>
+<p><%= link_to 'New tenant', new_tenant_path %></p>
+<table>
+  <thead><tr><th>Name</th><th>Slug</th><th>Plan</th><th>Status</th><th></th></tr></thead>
+  <tbody>
+    <% @tenants.each do |t| %>
+      <tr>
+        <td><%= link_to t.name, t %></td>
+        <td><code><%= t.slug %></code></td>
+        <td><%= t.billing_plan %></td>
+        <td><%= t.status %></td>
+        <td><%= link_to 'edit', edit_tenant_path(t) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

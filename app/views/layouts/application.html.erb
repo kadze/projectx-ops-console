@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Routebox ops</title>
+    <meta charset="utf-8">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <style>
+      body { font-family: -apple-system, system-ui, sans-serif; margin: 0; color: #1f2a44; }
+      nav { background: #1f2a44; color: white; padding: 12px 24px; }
+      nav a { color: #ffd166; margin-right: 16px; text-decoration: none; }
+      .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+      table { width: 100%; border-collapse: collapse; }
+      th, td { padding: 6px 8px; border-bottom: 1px solid #e5e7eb; text-align: left; }
+      .flash { padding: 8px 12px; background: #fff3cd; border: 1px solid #ffe69c; }
+    </style>
+  </head>
+  <body>
+    <% if current_admin %>
+      <nav>
+        <%= link_to 'Tenants',     tenants_path %>
+        <%= link_to 'Accounts',    accounts_path %>
+        <%= link_to 'Users',       users_path %>
+        <%= link_to 'Shipments',   shipments_path %>
+        <%= link_to 'Billing',     billing_index_path %>
+        <%= link_to 'Audit log',   audit_logs_path %>
+        <span style="float:right">
+          <% if impersonating? && impersonated_user %>
+            impersonating <%= impersonated_user.email %> ·
+            <%= button_to 'stop', impersonation_path, method: :delete, form: { style: 'display:inline' } %>
+          <% else %>
+            <%= current_admin.email %> · <%= button_to 'sign out', logout_path, method: :delete, form: { style: 'display:inline' } %>
+          <% end %>
+        </span>
+      </nav>
+    <% end %>
+    <div class="container">
+      <% flash.each do |type, msg| %>
+        <p class="flash"><%= msg %></p>
+      <% end %>
+      <%= yield %>
+    </div>
+  </body>
+</html>

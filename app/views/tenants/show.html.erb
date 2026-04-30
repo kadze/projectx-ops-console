@@ -1,0 +1,5 @@
+<h1><%= @tenant.name %></h1>
+<p>slug: <code><%= @tenant.slug %></code></p>
+<p>plan: <%= @tenant.billing_plan %></p>
+<p>status: <%= @tenant.status %></p>
+<p><%= link_to 'edit', edit_tenant_path(@tenant) %></p>

@@ -1,0 +1,13 @@
+<h1>Accounts</h1>
+<table>
+  <thead><tr><th>Name</th><th>Tenant</th><th>Status</th></tr></thead>
+  <tbody>
+    <% @accounts.each do |a| %>
+      <tr>
+        <td><%= link_to a.name, a %></td>
+        <td><%= a.tenant&.name %></td>
+        <td><%= a.status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

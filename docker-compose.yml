@@ -1,0 +1,96 @@
+# Local-dev compose for routebox-ops-console.
+#
+# Brings up Postgres 14 + Redis + the Rails app + a Sidekiq worker.
+# Migrations apply in two passes: Flyway first (from a sibling clone
+# of routebox-db-migrations), then `rails db:migrate` to layer Rails-
+# only schema on top.
+#
+# This compose file is up to date as of last check. The seed data is
+# NOT — see README. Run `rake routebox:dev_seed_tenant` after first
+# boot to create a tenant.
+
+version: '3.8'
+
+services:
+
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: routebox
+      POSTGRES_PASSWORD: routebox
+      POSTGRES_DB: routebox
+    ports:
+      - "5436:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U routebox -d routebox"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6380:6379"
+
+  flyway:
+    image: flyway/flyway:9-alpine
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ${ROUTEBOX_MIGRATIONS_DIR:-../routebox-db-migrations/flyway/sql}:/flyway/sql
+    command: >
+      -url=jdbc:postgresql://postgres:5432/routebox
+      -user=routebox
+      -password=routebox
+      -connectRetries=10
+      migrate
+
+  rails-migrate:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+      flyway:
+        condition: service_completed_successfully
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgres://routebox:routebox@postgres:5432/routebox
+      SECRET_KEY_BASE: dev-secret-key-base-not-real-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    command: bundle exec rake db:migrate
+
+  ops-console:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      flyway:
+        condition: service_completed_successfully
+      rails-migrate:
+        condition: service_completed_successfully
+    environment:
+      RAILS_ENV: development
+      RAILS_LOG_TO_STDOUT: '1'
+      DATABASE_URL: postgres://routebox:routebox@postgres:5432/routebox
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY_BASE: dev-secret-key-base-not-real-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      ROUTEBOX_INTERNAL_API_TOKEN: dev-internal-token-not-real
+      ROUTEBOX_SHIPMENTS_API_BASE_URL: http://host.docker.internal:3000
+    ports:
+      - "3001:3000"
+    command: bundle exec puma -C config/puma.rb
+
+  sidekiq:
+    build: .
+    depends_on:
+      ops-console:
+        condition: service_started
+    environment:
+      RAILS_ENV: development
+      RAILS_LOG_TO_STDOUT: '1'
+      DATABASE_URL: postgres://routebox:routebox@postgres:5432/routebox
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY_BASE: dev-secret-key-base-not-real-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    command: bundle exec sidekiq -C config/sidekiq.yml

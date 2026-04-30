@@ -1,0 +1,4 @@
+<h1><%= @account.name %></h1>
+<p>tenant: <%= @account.tenant&.name %></p>
+<p>status: <%= @account.status %></p>
+<p>branding: <%= @account.branding_logo_url || '—' %> <%= @account.branding_color_hex %></p>

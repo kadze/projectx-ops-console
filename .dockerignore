@@ -1,0 +1,7 @@
+# Same minimally-curated shape as the other apps.
+log
+tmp
+.git
+README.md
+test
+node_modules
