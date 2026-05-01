@@ -72,6 +72,13 @@ pipeline {
             // No approval gate. Runs every deploy. Yes, that means schema
             // changes can go to dev concurrently with whatever else is
             // happening. We've shipped this way for years.
+            //
+            // The $DEV_/$STAGING_/$PROD_PRIVATE_SUBNETS and *_ECS_SG vars
+            // below are Jenkins global env vars — set in the Jenkins UI
+            // ("Manage Jenkins" → "System" → Global properties), NOT in
+            // this repo. Platform team populated them at initial server
+            // setup. If you're staring at "where do these come from" go
+            // poke around there.
             steps {
                 sh """
                     aws ecs run-task \\
