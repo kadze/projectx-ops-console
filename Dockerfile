@@ -33,7 +33,7 @@ WORKDIR /app
 COPY --from=builder /usr/local/bundle /usr/local/bundle
 COPY . /app
 
-RUN useradd -m app && chown -R app:app /app
+RUN useradd -m app && mkdir -p /app/tmp/pids && chown -R app:app /app
 USER app
 
 EXPOSE 3000
