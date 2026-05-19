@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.fullname }}-config
+  namespace: {{ .Values.namespace }}
+data:
+  RAILS_ENV: {{ .Values.config.RAILS_ENV }}
+  RAILS_LOG_TO_STDOUT: {{ .Values.config.RAILS_LOG_TO_STDOUT | quote }}
+  RAILS_SERVE_STATIC_FILES: {{ .Values.config.RAILS_SERVE_STATIC_FILES | quote }}
+  AWS_REGION: {{ .Values.config.AWS_REGION }}
+  REDIS_URL: {{ .Values.config.REDIS_URL | quote }}
+  ROUTEBOX_SHIPMENTS_API_BASE_URL: {{ .Values.config.ROUTEBOX_SHIPMENTS_API_BASE_URL | quote }}
