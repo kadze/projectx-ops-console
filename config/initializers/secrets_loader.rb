@@ -35,7 +35,7 @@ if Rails.env.production? && ENV['SKIP_SECRETS_BOOTSTRAP'] != '1'
     "routebox/#{env_name}/DATABASE_URL"       => 'DATABASE_URL',
     "routebox/#{env_name}/INTERNAL_API_TOKEN" => 'ROUTEBOX_INTERNAL_API_TOKEN',
     "routebox/#{env_name}/JWT_SIGNING_KEY"    => 'JWT_SIGNING_KEY',
-    "routebox/#{env_name}/SMTP_PASSWORD"      => 'SMTP_PASSWORD',
+    # "routebox/#{env_name}/SMTP_PASSWORD"      => 'SMTP_PASSWORD',  # no mailer configured
   }.freeze
 
   client = Aws::SecretsManager::Client.new(region: region)
