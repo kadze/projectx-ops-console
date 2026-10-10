@@ -1,0 +1,6 @@
+apiVersion: v2
+name: routebox-ops-console
+description: Routebox Ops Console
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
