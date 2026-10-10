@@ -25,6 +25,7 @@ secrets:
   DATABASE_URL: ""
   SECRET_KEY_BASE: ""
   ROUTEBOX_INTERNAL_API_TOKEN: ""
+  JWT_SIGNING_KEY: ""
 
 resources:
   requests:
@@ -36,7 +37,7 @@ resources:
 
 livenessProbe:
   httpGet:
-    path: /healthz
+    path: /health
     port: 3000
   initialDelaySeconds: 45
   periodSeconds: 15
@@ -44,7 +45,7 @@ livenessProbe:
 
 readinessProbe:
   httpGet:
-    path: /readyz
+    path: /health
     port: 3000
   initialDelaySeconds: 45
   periodSeconds: 10
